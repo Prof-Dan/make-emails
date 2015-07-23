@@ -8,6 +8,34 @@ var emailEnd = 'From the make-emails bot :)';
 
 var messages = [];
 
+var maxInterval = 3600000;
+
+setInterval(function() {
+
+  console.log('timed out');
+
+  if(messages.length === 0) return;
+
+  var email = emailStart;
+
+  for(var i=0;i<messages.length;i++) {
+
+    console.log(messages[i]);
+
+    fs.appendFile('log.txt', messages[i]+'\n');
+
+    email += (i+1)+' : '+messages[i]+'\n';
+
+  }
+
+  messages = [];
+
+  email += '\n'+emailEnd;
+
+  fs.writeFile('email.txt', email);
+
+}, maxInterval);
+
 fs.watchFile('data.txt', function(){
 
   fileReader = new linebyline('data.txt');
