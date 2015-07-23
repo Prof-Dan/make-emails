@@ -3,7 +3,8 @@ var linebyline = require('line-by-line');
 
 var fileReader;
 
-var emailStart = 'Hello,\n You have recieved this email because several people have expressed interest in you product.\n\n';
+var emailStart = 'Hello,\n\tYou have received this email because several people have expressed interest in you product.\n\n';
+var emailEnd = 'From the make-emails bot :)';
 
 var messages = [];
 
@@ -22,15 +23,23 @@ fs.watchFile('data.txt', function(){
 
     if(messages.length >= 10) {
 
+      var email = emailStart;
+
       for(var i=0;i<messages.length;i++) {
 
         console.log(messages[i]);
 
         fs.appendFile('log.txt', messages[i]+'\n');
 
+        email += (i+1)+' : '+messages[i]+'\n';
+
       }
 
       messages = [];
+
+      email += '\n'+emailEnd;
+
+      fs.writeFile('email.txt', email);
 
     }
 
